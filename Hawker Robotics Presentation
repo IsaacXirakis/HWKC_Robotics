@@ -1,0 +1,20 @@
+# Robotics Major Project Presentation
+
+
+## Part 1: Project Rational
+
+Robotics exists as a midground between engineering and programming, so it is fitting that my major project reflects this balance 
+perfectly. The basic principle of my project was to identify different RFID tags, sort them into two groups and then change the 
+state of a physical lock according to the circumstance. To do this I needed to first learn how RFID chips interacted with an RFID receiver
+and deduce the best method for locking mechanisms. After reviewing a few different designs online I settled on a Hall Sensor and solenoid 
+lock arrangement that made the lock effective every time by ensuring the door was positioned correctly. The coding will use multiple states
+to best ensure that the project works smoothly. The state-based programming will be complicated since I will need to account for multiple 
+different devices interacting independently of each other. The construction portion of the project should pose little challenge, but the 
+wiring and electronics will require time to complete properly. All the above factors should make my Major Project a task worthy of 5 weeks 
+of work.
+
+
+## Links for Documentation
+[Main Design Sheet](https://docs.google.com/document/d/1qm_VFXAhUpDsSA87u15deep8eEKhQYWEErKMA5tynVE/edit?usp=sharing)
+
+
