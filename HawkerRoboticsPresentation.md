@@ -17,7 +17,7 @@ of work.
 
 The major project I embarked on, while quite code-intensive, did not require complex design choices. Because of this, the initial design has 
 been accepted as the final version going into development. Through the research of other commercially available RFID cat doors, I created
-a diagram of the project that will be the final version going into development. The diagram can be found both on the PowerPoint and in 
+a diagram of the project that will be the final version going into development. The diagram can be found both on the Presentation and in 
 the links below. The code for the experiment presents a learning experience for me as it uses multiple devices instead of simply a lego
 shield, but that coding itself is almost entirely state-based, a method I have experience in with previous projects. Code examples can 
 be found in the inspirational projects, but these will be only used for guidance and not as a stand-in for my own work. 
@@ -46,7 +46,7 @@ not be greatly affected.
 
 [RFID reader Information](https://create.arduino.cc/projecthub/Aritro/security-access-using-rfid-reader-f7c746)
 
-[PowerPoint](https://docs.google.com/presentation/d/1afHiodBoDgf3jmnhNnOGJMtnQQVgiAtm0f8tgOZWwgk/edit?usp=sharing)
+[Presentation](https://docs.google.com/presentation/d/1afHiodBoDgf3jmnhNnOGJMtnQQVgiAtm0f8tgOZWwgk/edit?usp=sharing)
 
 [Diagram](https://github.com/IsaacXirakis/HWKC_Robotics/blob/master/Capture.PNG)
 
