@@ -31,14 +31,23 @@ not be greatly affected.
 
 
 ## Links for Documentation
+
 [Main Design Sheet](https://docs.google.com/document/d/1qm_VFXAhUpDsSA87u15deep8eEKhQYWEErKMA5tynVE/edit?usp=sharing)
+
 [Inspirational Project](https://www.instructables.com/id/RFID-cat-door/)
+
 [Inspirational Project](https://www.gizmodo.com.au/2019/07/this-ai-powered-cat-door-is-a-brilliant-way-to-keep-a-kittys-murder-presents-outside/)
+
 [Hall Sensor Explanation](https://www.instructables.com/id/Hall-effect-sensor/)
+
 [Design Inspiration](https://www.temporarypetdoor.com.au/sureflap-microchip-rfid-cat-door)
+
 [Hall Sensor Explanation](https://www.instructables.com/id/Hall-Sensor-Tutorial/)
+
 [RFID reader Information](https://create.arduino.cc/projecthub/Aritro/security-access-using-rfid-reader-f7c746)
+
 [PowerPoint](https://docs.google.com/presentation/d/1afHiodBoDgf3jmnhNnOGJMtnQQVgiAtm0f8tgOZWwgk/edit?usp=sharing)
+
 [Diagram](https://imgur.com/Ehf8MGH)
 
 
