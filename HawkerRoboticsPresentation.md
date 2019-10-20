@@ -48,7 +48,7 @@ not be greatly affected.
 
 [PowerPoint](https://docs.google.com/presentation/d/1afHiodBoDgf3jmnhNnOGJMtnQQVgiAtm0f8tgOZWwgk/edit?usp=sharing)
 
-[Diagram](https://imgur.com/Ehf8MGH)
+[Diagram](https://github.com/IsaacXirakis/HWKC_Robotics/blob/master/Capture.PNG)
 
 
 
