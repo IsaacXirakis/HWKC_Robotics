@@ -34,9 +34,9 @@ not be greatly affected.
 
 [Main Design Sheet](https://docs.google.com/document/d/1qm_VFXAhUpDsSA87u15deep8eEKhQYWEErKMA5tynVE/edit?usp=sharing)
 
-[Inspirational Project](https://www.instructables.com/id/RFID-cat-door/)
+[Inspirational Project 1](https://www.instructables.com/id/RFID-cat-door/)
 
-[Inspirational Project](https://www.gizmodo.com.au/2019/07/this-ai-powered-cat-door-is-a-brilliant-way-to-keep-a-kittys-murder-presents-outside/)
+[Inspirational Project 2](https://www.gizmodo.com.au/2019/07/this-ai-powered-cat-door-is-a-brilliant-way-to-keep-a-kittys-murder-presents-outside/)
 
 [Hall Sensor Explanation](https://www.instructables.com/id/Hall-effect-sensor/)
 
