@@ -1,0 +1,65 @@
+#include <SoftwareSerial.h>
+
+
+const int HALL_pin = 3;
+const int LOCK_pin = 4;
+const int LED_pin = 5;
+const int BUTTON1_pin = 6;
+const int BUTTON2_pin = 7;
+
+//1st RFID Receiver
+const int RF1_RECEIVE_pin = 1;
+const int RF1_TRANSMIT_pin = 2;
+SoftwareSerial mySerial1(RF1_RECEIVE_pin, RF1_TRANSMIT_pin);
+
+//2nd RFID Receiver
+const int RF2_RECEIVE_pin = 10;
+const int RF2_TRANSMIT_pin = 11;
+SoftwareSerial mySerial2(RF2_RECEIVE_pin, RF2_TRANSMIT_pin);
+
+int LOCK_STATE;
+const int OPEN = 1; //For solenoid
+const int CLOSED = 0; //For solenoid
+const int ALIGNED = 0; //For Hall Sensor
+const int NOTALIGNED = 1; //For Hall Sensor
+
+int incomingByte = 0;
+int teller = 0;
+
+const int debounce_time=1000;
+const int open_time = 3000;
+long startMillis;
+
+void setup() {
+  Serial.begin(9600);
+  mySerial1.begin(9600);
+  mySerial2.begin(9600);
+  Serial.println("Hall, Solenoid and Button");
+  pinMode(BUTTON1_pin, INPUT);
+  pinMode(BUTTON2_pin, INPUT);
+  pinMode(LED_pin, OUTPUT);
+  pinMode(LOCK_pin, OUTPUT);
+  digitalWrite(LOCK_pin, LOW);
+  LOCK_STATE = CLOSED;
+  digitalWrite(LED_pin, LOW);
+}
+
+void loop() {
+ int tmp;
+ byte valr;
+
+ if(teller==0)
+ {
+  teller=1;
+ printVars();
+ }
+
+ if(RFID1() == 2)
+ {
+  Serial.println("No Access");
+  while(mySerial.available())
+  valr = mySerial.read();
+ }
+ 
+
+}
