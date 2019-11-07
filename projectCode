@@ -51,15 +51,43 @@ void loop() {
  if(teller==0)
  {
   teller=1;
- printVars();
+ printvars();
  }
 
  if(RFID1() == 2)
  {
   Serial.println("No Access");
-  while(mySerial.available())
-  valr = mySerial.read();
+  while(mySerial1.available());
+  valr = mySerial1.read();
  }
  
 
+}
+
+void printvars()  
+{
+  Serial.print("HALL: ");
+  if(digitalRead(HALL_pin)==ALIGNED)
+  Serial.print("ALIGNED");
+  else
+  Serial.print("NOTALIGNED");
+  
+  Serial.print(", SOLENOID1: ");
+  if(LOCK_STATE==OPEN)
+  Serial.print("OPEN");
+  else
+  Serial.print("CLOSED");
+  Serial.println(" ");
+}
+
+int RFID1(){
+  byte i = 0;
+  byte val = 0;
+  byte code[6];
+  byte goodcode[6] = {0x8C, 0, 0x81, 0xB8, 0x73}; //enter hex for good RFID tag
+  byte badcode [6] = {0xE1, 0, 0x3B, 0x9B, 0x2D}; //enter hex for bad RFID tag
+}
+
+int RFID2(){
+  
 }
