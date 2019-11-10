@@ -26,7 +26,7 @@ const int NOTALIGNED = 1; //For Hall Sensor
 int incomingByte = 0;
 int teller = 0;
 
-const int debounce_time=1000;
+const int debounce_time = 1000;
 const int open_time = 3000;
 long startMillis;
 
@@ -45,49 +45,147 @@ void setup() {
 }
 
 void loop() {
- int tmp;
- byte valr;
+  int tmp;
+  byte valr;
 
- if(teller==0)
- {
-  teller=1;
- printvars();
- }
+  if (teller == 0)
+  {
+    teller = 1;
+    printvars();
+  }
 
- if(RFID1() == 2)
- {
-  Serial.println("No Access");
-  while(mySerial1.available());
-  valr = mySerial1.read();
- }
- 
+  if (RFID1() == 2)
+  {
+    Serial.println("No Access");
+    while (mySerial1.available());
+    valr = mySerial1.read();
+  }
+
 
 }
 
-void printvars()  
+void printvars()
 {
   Serial.print("HALL: ");
-  if(digitalRead(HALL_pin)==ALIGNED)
-  Serial.print("ALIGNED");
+  if (digitalRead(HALL_pin) == ALIGNED)
+    Serial.print("ALIGNED");
   else
-  Serial.print("NOTALIGNED");
-  
+    Serial.print("NOTALIGNED");
+
   Serial.print(", SOLENOID1: ");
-  if(LOCK_STATE==OPEN)
-  Serial.print("OPEN");
+  if (LOCK_STATE == OPEN)
+    Serial.print("OPEN");
   else
-  Serial.print("CLOSED");
+    Serial.print("CLOSED");
   Serial.println(" ");
 }
 
-int RFID1(){
+int RFID1() {
   byte i = 0;
   byte val = 0;
   byte code[6];
   byte goodcode[6] = {0x8C, 0, 0x81, 0xB8, 0x73}; //enter hex for good RFID tag
   byte badcode [6] = {0xE1, 0, 0x3B, 0x9B, 0x2D}; //enter hex for bad RFID tag
+  byte checksum = 0;
+  byte bytesread = 0;
+  byte tempbyte = 0;
+  int result = 0;
+  int cnt_good = 0;
+  int cnt_bad = 0;
+
+  if (mySerial1.available())
+  {
+    result = 1;
+    if ((val = mySerial1.read()) == 0x02)
+    {
+      bytesread = 0;
+      Serial.println("I read it");
+      while (bytesread < 12)
+      { 
+        if (mySerial1.available())
+        {
+          val = mySerial1.read();
+          if ((val == 0x0D) || (val == 0x0A) || (val == 0x03) || (val == 0x02))
+          {
+            break; // stop reading
+          }
+
+          // Do Ascii/Hex conversion:
+          if ((val >= '0') && (val <= '9'))
+          {
+            val = val - '0';
+          }
+          else if ((val >= 'A') && (val <= 'F'))
+          {
+            val = 10 + val - 'A';
+          }
+
+         
+          if (bytesread & 1 == 1)
+          {
+            
+            code[bytesread >> 1] = (val | (tempbyte << 4));
+
+            if (bytesread >> 1 != 5)
+            { 
+              checksum ^= code[bytesread >> 1];
+            }
+          }
+          else
+          {
+            tempbyte = val; 
+          }
+          bytesread++; 
+        }
+      }
+
+      
+
+      if (bytesread == 12)
+      { 
+        Serial.print("5-byte code: ");
+
+        for (i = 0; i < 5; i++)
+        {
+          if (code[i] < 16) mySerial1.print("0");
+          Serial.print(code[i], HEX);
+          Serial.print(" ");
+          if (code[i] == goodcode[i])
+            cnt_good += 1;
+          if (code[i] == badcode[i])
+            cnt_bad += 1;
+        }
+
+        Serial.println(" ");
+        Serial.println(cnt_good);
+        Serial.println(cnt_bad);
+        if (cnt_good == 5)
+        {
+          return 3;
+        }
+        if (cnt_bad == 5)
+        {
+          return 2;
+        }
+        if ((cnt_good != 5) && (cnt_bad != 5))
+        {
+          return 0;
+        }
+        Serial.println(result);
+
+        Serial.println();
+        Serial.print("Checksum: ");
+        Serial.print(code[5], HEX);
+        Serial.println(code[5] == checksum ? " -- passed." : " -- error.");
+
+        Serial.println();
+      }
+      bytesread = 0;
+    }
+  }
+  //return result;
 }
 
-int RFID2(){
-  
+int RFID2() {
+
 }
