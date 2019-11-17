@@ -60,7 +60,119 @@ void loop() {
     while (mySerial1.available());
     valr = mySerial1.read();
   }
-
+  if (RFID2() == 2)
+  {
+   Serial.println("No Access");
+     while (mySerial2.available());
+    valr = mySerial2.read();
+  }
+  
+  if (RFID1() == 3)
+  {
+   printvars();
+    Serial.println("unlocking the door...");
+    if(LOCK_STATE==CLOSED)
+    {
+      digitalWrite(LOCK_pin, HIGH);
+      LOCK_STATE=OPEN;
+      digitalWrite(LED_pin, HIGH);
+      printvars();
+    }
+    
+    while(mySerial1.available())
+      valr = mySerial1.read();
+    
+    startMillis = millis():
+    Serial.println("Starting Timer")
+      while(millis()-startMillis<open_time)
+    {
+     if(RFID1() == 3)
+     {
+      Serial.println("RFID: reset timer")
+        startMillis = millis();
+       while(mySerial.available())
+         valr = mySerial1.read();
+     }
+      if(digitalRead(HALL_pin)==NOTALIGNED)
+      {
+       Serial.println("Hall Sensor. Cut timer");
+        break;
+      }
+      
+      if(RFID1() == 2)
+      {
+       Serial.println("Other Cat Present");
+        if(digitalRead(HALL_pin)==ALIGNED)
+        {
+         startMillis = millis();
+          Serial.println("debouncing");
+          while(millis()-startMillis<debounce_time)
+          {
+            if(digitalRead(HALL_pin)--NOTALIGNED)
+            {
+              printvars();
+              startMillis = millis();
+            }
+          }
+          Serial.println("locking door");
+          digitalWrite(LOCK_pin, LOW);
+          digitalWrite(OPENLED_pin, LOW);
+          LOCK_STATE=CLOSED;
+          delay(500);
+        }
+        
+      }
+    }
+     printvars();
+    
+    while(LOCK_STATE==OPEN)
+    {
+      if(digitalRead(HALL_pin)==ALIGNED)
+      {
+        startMillis = millis();
+        Serial.println("debouncing");
+        while(millis()-startMillis<debouncing_time)
+        {if(digitalRead(Hall_pin)==NOTALIGNED
+            {printvars();
+             startMillis = millis();
+            }
+        }
+            Serial.println("Locking door");
+            digitalWrite(LOCK_pin, LOW);
+            LOCK_STATE=CLOSED;
+            delay(500);
+            }
+            
+            }
+            }
+            printvars();
+            
+            while(LOCK_STATE==OPEN)
+            {
+              if(digitalRead(HALL_pin)==ALIGNED)
+              {
+                startMillis = millis();
+                Serial.println("debouncing");
+                while(millis()-startMillis<debounce_time)
+                {if(digitalRead(HALL_pin)==NOTALIGNED)
+                {
+                  printvars();
+                  startMillis = millis();
+                }
+                }
+                Serial.println("Locking door");
+                digitalWrite(LOCK_pin, LOW);
+                LOCK_STATE=CLOSED
+                  delay(500)
+              }
+            }
+            printvars();
+            while(mySerial1.available())
+            valr = mySerial1.read();
+            }
+            // end of if(RFID1()==3)
+            
+  }
 
 }
 
