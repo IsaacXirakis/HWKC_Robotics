@@ -116,7 +116,7 @@ void loop() {
           }
           Serial.println("locking door");
           digitalWrite(LOCK_pin, LOW);
-          digitalWrite(OPENLED_pin, LOW);
+          digitalWrite(LED_pin, LOW);
           LOCK_STATE=CLOSED;
           delay(500);
         }
@@ -172,8 +172,97 @@ void loop() {
             }
             // end of if(RFID1()==3)
             
-  }
+  if(RFID2() == 3)
+  {
+  printvars();  
+  Serial.println("unlocking the door ...");  
+  if((LOCK_STATE==CLOSED)
+    {
+    digitalWrite(LOCK_pin, HIGH);
+   LOCK_STATE=OPEN; 
+    digitalWrite(LED_pin, HIGH);
+    printvars();
+    }
+    
+  while(mySerial2.available())
+  valr = mySerial2.read();
+  
+  startMillis = millis();
+  Serial.println("starting timer ...");
+  while(millis()-startMillis<open_time) 
+    {
+     
+       
+    if(RFID2() == 3)
+      {
+      Serial.println("RFID2: reset timer ...");
+      startMillis = millis();
+      while(mySerial2.available())
+      valr = mySerial2.read();
+      }  
+        
+    if(digitalRead(HALL_pin)==NOTALIGNED)
+     {    
+      Serial.println("Hall sensor: end timer ...");
+      break;
+      }
 
+    if(RFID2() == 2)
+      {    
+      Serial.println("RFID2: other cat! ");
+      if(digitalRead(HALL_pin)==ALIGNED)
+      {
+         startMillis = millis();
+         Serial.println("debouncing ...");
+         while(millis()-startMillis<debounce_time) 
+           {
+           if(digitalRead(HALL_pin)==NOTALIGNED) 
+              { 
+              printvars();
+              startMillis = millis();
+              }
+           }
+         
+         Serial.println("locking door ...");
+         digitalWrite(LOCK_pin, LOW);
+         digitalWrite(OPENLED_pin, LOW);  
+         LOCK_STATE=CLOSED;      
+         delay(500);
+         }
+      
+      }
+    }
+  printvars();
+      
+
+  while(LOCK_STATE==OPEN)
+    {
+    if(digitalRead(HALL_pin)==ALIGNED)
+    {
+       startMillis = millis();
+       Serial.println("debouncing ...");
+       while(millis()-startMillis<debounce_time) 
+         {
+         if(digitalRead(HALL_pin)==NOTALIGNED) 
+            { 
+            printvars();
+            startMillis = millis();
+            }
+         }
+       Serial.println("locking door ...");
+       digitalWrite(SOLENOID2_pin, LOW);
+       digitalWrite(OPENLED_pin, LOW);  
+       SOLENOID2_STATE=CLOSED;      
+       delay(500);
+       }
+    }
+  printvars(); 
+  while(mySerial2.available())
+  valr = mySerial2.read();  
+  }
+//end of if(RFID2() == 3)
+
+            
 }
 
 void printvars()
@@ -219,10 +308,10 @@ int RFID1() {
           val = mySerial1.read();
           if ((val == 0x0D) || (val == 0x0A) || (val == 0x03) || (val == 0x02))
           {
-            break; // stop reading
+            break; 
           }
 
-          // Do Ascii/Hex conversion:
+         
           if ((val >= '0') && (val <= '9'))
           {
             val = val - '0';
@@ -295,9 +384,111 @@ int RFID1() {
       bytesread = 0;
     }
   }
-  //return result;
+  return result;
 }
 
-int RFID2() {
+int RFID2() 
+{
+  byte i = 0;
+  byte val = 0;
+  byte code[6];
+  byte goodcode[6] = {0x1C, 0, 0xFC, 0xB2, 0x90};
+  byte badcode[6] = {0x16, 0, 0x78, 0xE7, 0xFE};
+  byte checksum = 0;
+  byte bytesread = 0;
+  byte tempbyte = 0;
+  int result = 0;
+  int cnt_good=0;
+  int cnt_bad=0;
+        
+  if(mySerial2.available()) 
+  {
+    result=1;
+    if((val = mySerial2.read()) == 0x02) 
+    { 
+      bytesread = 0; 
+      Serial.println("I read it");
+      while (bytesread < 12) 
+      {
+        if(mySerial2.available()) 
+        { 
+          val = mySerial2.read();
+          if((val == 0x0D)||(val == 0x0A)||(val == 0x03)||(val == 0x02)) 
+          {  
+            break; 
+          }
 
+        
+          if ((val >= '0') && (val <= '9')) 
+          {
+            val = val - '0';
+          } 
+          else if ((val >= 'A') && (val <= 'F')) 
+          {
+            val = 10 + val - 'A';
+          }
+
+          if (bytesread & 1 == 1) 
+          {
+          
+            code[bytesread >> 1] = (val | (tempbyte << 4));
+
+            if (bytesread >> 1 != 5) 
+            {
+              checksum ^= code[bytesread >> 1];
+            }
+          } 
+          else 
+          {
+            tempbyte = val; // Store the first hex digit first...
+          }
+          bytesread++; // ready to read next digit
+        } 
+      } 
+
+     
+
+      if (bytesread == 12) 
+      {  // if 12 digit read is complete
+      Serial.print("5-byte code: ");
+
+        for (i=0; i<5; i++) 
+        {
+          if (code[i] < 16) mySerial2.print("0");
+          Serial.print(code[i], HEX);
+          Serial.print(" ");
+          if(code[i]==goodcode[i])
+          cnt_good+=1;
+          if(code[i]==badcode[i])
+          cnt_bad+=1;          
+        }
+          
+        Serial.println(" ");  
+        Serial.println(cnt_good);  
+        Serial.println(cnt_bad);
+        if(cnt_good==5)  
+        {
+          return 3;
+        }
+        if(cnt_bad==5) 
+        { 
+        return 2;
+        }
+        if((cnt_good!=5) && (cnt_bad!=5))
+        {
+        return 0;
+        }        
+       Serial.println(result);
+       
+        Serial.println();
+        Serial.print("Checksum: ");
+        Serial.print(code[5], HEX);
+        Serial.println(code[5] == checksum ? " -- passed." : " -- error.");
+        
+        Serial.println();
+      }
+      bytesread = 0;
+    }
+  }
+  return result;
 }
