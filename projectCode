@@ -392,8 +392,8 @@ int RFID2()
   byte i = 0;
   byte val = 0;
   byte code[6];
-  byte goodcode[6] = {0x1C, 0, 0xFC, 0xB2, 0x90};
-  byte badcode[6] = {0x16, 0, 0x78, 0xE7, 0xFE};
+  byte goodcode[6] = {0x8C, 0, 0x81, 0xB8, 0x73}; //enter hex for good RFID tag
+  byte badcode [6] = {0xE1, 0, 0x3B, 0x9B, 0x2D}; //enter hex for bad RFID tag
   byte checksum = 0;
   byte bytesread = 0;
   byte tempbyte = 0;
